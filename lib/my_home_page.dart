@@ -1,3 +1,5 @@
+import 'dart:ffi';
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:weather/colors.dart';
 import 'package:weather/weather_app.dart';
@@ -13,7 +15,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String cityName = '';
   String weatherInfo = 'Enter a city name';
   String todayWeather = '';
-  String todayTmp = '';
+  num todayTmp = 0;
 
   Future<void> fetchWeather() async {
     try {
@@ -22,21 +24,23 @@ class _MyHomePageState extends State<MyHomePage> {
 
       // for (var 変数 in 配列)
       // Listなどに格納されている全てのデータを0から順に取得し、宣言した変数に代入させていく
-      for (var forecast in forecastList) {
-        final dateTime = forecast['dt_txt']; // 日時
-        final temp = forecast['main']['temp']; // 温度
-        final weatherDescription =
-            forecast['weather'][0]['description']; // 天気の説明
+      // for (var forecast in forecastList) {
+      //   final dateTime = forecast['dt_txt']; // 日時
+      //   final temp = forecast['main']['temp']; // 温度
+      //   final weatherDescription =
+      //       forecast['weather'][0]['description']; // 天気の説明
 
-        print(
-            'DateTime: $dateTime, Temp: $temp°C, Weather: $weatherDescription');
-      }
+      //   print(
+      //       'DateTime: $dateTime, Temp: $temp°C, Weather: $weatherDescription');
+      // }
 
       setState(() {
-        todayWeather = data['today']['main']['temp'];
-        todayTmp = data['today']['weather'][0]['description'];
-        weatherInfo = 'Temperature: $todayWeather°C\n'
-            'Condition: $todayTmp';
+        todayWeather = data['today']['weather'][0]['description'];
+        // ('計算式').round()で四捨五入
+        todayTmp = (data['today']['main']['temp']).round();
+
+        // weatherInfo = 'Temperature: $todayWeather°C\n' 'Condition: $todayTmp';
+        weatherInfo = '$todayTmp';
       });
     } catch (e) {
       setState(() {
@@ -48,6 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: MyColors.blue,
         title: const Text('Weather App'),
@@ -68,7 +73,32 @@ class _MyHomePageState extends State<MyHomePage> {
               child: const Text('Get Weather'),
             ),
             const SizedBox(height: 20),
-            Text(weatherInfo, textAlign: TextAlign.center),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center, // 中央揃え
+              crossAxisAlignment: CrossAxisAlignment.center, // 縦方向で中央揃え
+              children: [
+                // if (todayTmp == 'overcast clouds') ...[
+                //   Image.asset('assets/images/sunny.jpg', height: 100, width: 100),
+                // ] else ...[
+                //   const Text('No image available for current weather'),
+                // ],
+                Image.asset('assets/images/sunny.jpg', height: 160, width: 160),
+                const SizedBox(width: 10),
+
+                Container(
+                  height: 160, // 画像と同じ高さ
+                  alignment: Alignment.center, // テキストを中央揃え
+                  child: Text(
+                    weatherInfo,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 64,
+                      height: 1,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),
