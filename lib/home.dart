@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:weather/colors.dart';
+import 'package:weather/weatherIcon.dart';
 
 class MyHomePage extends StatefulWidget {
-  final String tmp; // コンストラクタで受け取る変数はfinalにするのがベストプラクティス
+  final String tmp;
+  final String weatherDescription;
 
-  const MyHomePage(this.tmp, {Key? key}) : super(key: key);
+  const MyHomePage(
+      {Key? key, required this.tmp, required this.weatherDescription})
+      : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -13,6 +17,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
+    debugPrint('weatherDescription: ${widget.weatherDescription}');
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -27,11 +32,7 @@ class _MyHomePageState extends State<MyHomePage> {
               mainAxisAlignment: MainAxisAlignment.center, // 中央揃え
               crossAxisAlignment: CrossAxisAlignment.center, // 縦方向で中央揃え
               children: [
-                Image.asset(
-                  'assets/images/sunny.jpg',
-                  height: 160,
-                  width: 160,
-                ),
+                WeatherIcon(weatherDescription: widget.weatherDescription),
                 const SizedBox(width: 10),
                 Container(
                   height: 160, // 画像と同じ高さ

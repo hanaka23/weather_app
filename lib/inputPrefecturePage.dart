@@ -26,11 +26,14 @@ class _InputPrefecturePageState extends State<InputPrefecturePage> {
         weatherInfo = '$todayTmp';
       });
 
-      // 天気データ取得成功時に画面遷移
+      // 天気データ取得成功時に画面遷移（todayWeatherも渡す）
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => MyHomePage(weatherInfo),
+          builder: (context) => MyHomePage(
+            tmp: weatherInfo, // 気温データ
+            weatherDescription: todayWeather, // 天気の説明
+          ),
         ),
       );
     } catch (e) {
