@@ -9,6 +9,7 @@ class WeatherApp {
   static const String futureBaseUrl =
       'http://api.openweathermap.org/data/2.5/forecast';
 
+
   static Future<Map<String, dynamic>> getWeather(String cityName) async {
     final todayUrl = Uri.parse(
         '$todayBaseUrl?q=$cityName&appid=$apiKey&units=metric');

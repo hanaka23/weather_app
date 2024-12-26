@@ -15,6 +15,8 @@ class _InputPrefecturePageState extends State<InputPrefecturePage> {
   String weatherInfo = 'Enter a city name';
   String todayWeather = '';
   num todayTmp = 0;
+  List futureWeather = [];
+  List futureTmp = [];
 
   Future<void> fetchWeather() async {
     try {
@@ -24,9 +26,27 @@ class _InputPrefecturePageState extends State<InputPrefecturePage> {
         todayWeather = data['today']['weather'][0]['main'];
         todayTmp = (data['today']['main']['temp']).round();
         weatherInfo = '$todayTmp';
-      });
+        futureTmp = [
+    (data['future']['list'][0]['main']['temp']).round(),
+    (data['future']['list'][7]['main']['temp']).round(),
+    (data['future']['list'][15]['main']['temp']).round(),
+    (data['future']['list'][23]['main']['temp']).round(),
+    (data['future']['list'][31]['main']['temp']).round(),
+    (data['future']['list'][39]['main']['temp']).round(),
+  ];
 
-      debugPrint(todayWeather);
+  // 指定されたインデックスの天気データをリストに格納
+  futureWeather = [
+    data['future']['list'][0]['weather'][0]['main'],
+    data['future']['list'][7]['weather'][0]['main'],
+    data['future']['list'][15]['weather'][0]['main'],
+    data['future']['list'][23]['weather'][0]['main'],
+    data['future']['list'][31]['weather'][0]['main'],
+    data['future']['list'][39]['weather'][0]['main'],
+  ];
+      });
+      print('future weather = $futureWeather');
+      // print('futureTmp = $futureTmp');
       // 天気データ取得成功時に画面遷移（todayWeatherも渡す）
       Navigator.push(
         context,
