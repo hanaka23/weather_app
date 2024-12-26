@@ -21,11 +21,12 @@ class _InputPrefecturePageState extends State<InputPrefecturePage> {
       final data = await WeatherApp.getWeather(cityName);
 
       setState(() {
-        todayWeather = data['today']['weather'][0]['description'];
+        todayWeather = data['today']['weather'][0]['main'];
         todayTmp = (data['today']['main']['temp']).round();
         weatherInfo = '$todayTmp';
       });
 
+      debugPrint(todayWeather);
       // 天気データ取得成功時に画面遷移（todayWeatherも渡す）
       Navigator.push(
         context,
